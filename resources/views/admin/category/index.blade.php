@@ -17,6 +17,14 @@
 
             <div class="col-md-8">
                 <div class="card">
+                    @if(session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>{{ session('success') }}</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    @endif
                     <div class="card-header">All category</div>
 
 
@@ -24,22 +32,32 @@
                         <thead>
                             <tr>
                                 <th scope="col">SL No</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Email</th>
+                                <th scope="col">Category Name</th>
+                                <th scope="col">User Name</th>
                                 <th scope="col">Created At</th>
                             </tr>
                         </thead>
                         <tbody>
-                            
+                            <!-- @php($i = 1) -->
+                            @foreach($categories as $category)
                             <tr>
-                                <th scope="row"></th>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <th scope="row">{{ $categories->firstItem()+$loop->index }}</th>
+                                <td>{{ $category->category_name }}</td>
+                                <td>{{ $category->user->name }}</td>
+                                <td>
+                                    @if($category->created_at == NULL)
+                                    <span class="text-danger">No Date Set</span>
+                                    
+                                    @else
+                                    {{ $category->created_at->diffForHumans() }}
+                                    @endif
+                                </td>
                             </tr>
-                            
+                            @endforeach
+
                         </tbody>
                     </table>
+                    {{ $categories->links() }}
                 </div>
             </div>
 
